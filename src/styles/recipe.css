@@ -1,0 +1,32 @@
+.mr-1 {
+	margin-right: 5px;
+}
+
+.recipe {
+	border-bottom: 1px solid black;
+	padding: 20px;
+}
+
+.recipe-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 30px;
+}
+
+.recipe-row {
+	margin-top: 10px;
+}
+
+.recipe-label {
+}
+
+.recipe-value {
+	font-weight: 300;
+}
+
+.indent {
+	margin-top: 10px;
+	margin-left: 20px;
+	white-space: pre-wrap;
+}
