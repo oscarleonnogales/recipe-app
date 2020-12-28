@@ -2,7 +2,7 @@ import React from 'react';
 import './RecipeIngredientEdit';
 import RecipeIngredientEdit from './RecipeIngredientEdit';
 
-export default function RecipeEdit() {
+export default function RecipeEdit({ recipe }) {
 	return (
 		<div className="recipe-edit">
 			<div className="recipe-edit__close-btn-container">
@@ -12,19 +12,28 @@ export default function RecipeEdit() {
 				<label htmlFor="name" className="recipe-edit__label">
 					Name
 				</label>
-				<input type="text" name="name" id="name" className="recipe-list__input"></input>
+				<input type="text" name="name" id="name" className="recipe-list__input" value={recipe.name}></input>
 				<label htmlFor="cookTime" className="recipe-edit__label">
 					Cook Time
 				</label>
-				<input type="text" name="cookTime" id="cookTime" className="recipe-list__input"></input>
+				<input type="text" name="cookTime" id="cookTime" className="recipe-list__input" value={recipe.cookTime}></input>
 				<label htmlFor="servings" className="recipe-edit__label">
 					Servings
 				</label>
-				<input type="number" min="1" name="servings" id="servings" className="recipe-list__input"></input>
+				<input
+					type="number"
+					min="1"
+					name="servings"
+					id="servings"
+					className="recipe-list__input"
+					value={recipe.servings}
+				></input>
 				<label htmlFor="instructions" className="recipe-edit__label">
 					Instructions
 				</label>
-				<textarea name="instructions" id="instructions" className="recipe-list__input"></textarea>
+				<textarea name="instructions" id="instructions" className="recipe-list__input">
+					{recipe.instructions}
+				</textarea>
 			</div>
 			<br />
 			<label className="recipe-edit__label">Ingredients</label>
@@ -32,8 +41,9 @@ export default function RecipeEdit() {
 				<div>Name</div>
 				<div>Amount</div>
 				<div></div>
-				<RecipeIngredientEdit></RecipeIngredientEdit>
-				<RecipeIngredientEdit></RecipeIngredientEdit>
+				{recipe.ingredients.map((ingredient) => {
+					return <RecipeIngredientEdit key={ingredient.id} ingredient={ingredient}></RecipeIngredientEdit>;
+				})}
 			</div>
 			<div className="recipe-edit__add-ingredient-btn-container">
 				<button className="btn add-recipe-btn">Add Ingredient</button>
