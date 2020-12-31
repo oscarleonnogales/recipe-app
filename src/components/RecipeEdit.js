@@ -2,9 +2,10 @@ import React, { useContext } from 'react';
 import './RecipeIngredientEdit';
 import RecipeIngredientEdit from './RecipeIngredientEdit';
 import { RecipeContext } from './App';
+import uuidv4 from '../../node_modules/uuid/dist/v4';
 
 export default function RecipeEdit({ recipe }) {
-	const { handleRecipeChange } = useContext(RecipeContext);
+	const { handleRecipeChange, handleRecipeSelect } = useContext(RecipeContext);
 
 	function handleChange(changes) {
 		handleRecipeChange(recipe.id, { ...recipe, ...changes });
@@ -17,10 +18,27 @@ export default function RecipeEdit({ recipe }) {
 		handleChange({ ingredients: newIngredients });
 	}
 
+	function handleIngredientAdd() {
+		const newIngredient = {
+			id: uuidv4(),
+			name: '',
+			amount: '',
+		};
+		handleChange({ ingredients: [...recipe.ingredients, newIngredient] });
+	}
+
+	function handleIngredientDelete(id) {
+		handleChange({
+			ingredients: recipe.ingredients.filter((i) => i.id !== id),
+		});
+	}
+
 	return (
 		<div className="recipe-edit">
 			<div className="recipe-edit__close-btn-container">
-				<button className="btn recipe-edit-remove-button">&times;</button>
+				<button className="btn recipe-edit-remove-button" onClick={() => handleRecipeSelect(undefined)}>
+					&times;
+				</button>
 			</div>
 			<div className="recipe-edit__details-grid">
 				<label htmlFor="name" className="recipe-edit__label">
@@ -32,7 +50,7 @@ export default function RecipeEdit({ recipe }) {
 					id="name"
 					className="recipe-list__input"
 					value={recipe.name}
-					onInput={(e) => handleChange({ name: e.target.value })}
+					onChange={(e) => handleChange({ name: e.target.value })}
 				></input>
 				<label htmlFor="cookTime" className="recipe-edit__label">
 					Cook Time
@@ -43,7 +61,7 @@ export default function RecipeEdit({ recipe }) {
 					id="cookTime"
 					className="recipe-list__input"
 					value={recipe.cookTime}
-					onInput={(e) => handleChange({ cookTime: e.target.value })}
+					onChange={(e) => handleChange({ cookTime: e.target.value })}
 				></input>
 				<label htmlFor="servings" className="recipe-edit__label">
 					Servings
@@ -55,7 +73,7 @@ export default function RecipeEdit({ recipe }) {
 					id="servings"
 					className="recipe-list__input"
 					value={recipe.servings}
-					onInput={(e) => handleChange({ servings: parseInt(e.target.value) || '' })}
+					onChange={(e) => handleChange({ servings: parseInt(e.target.value) || '' })}
 				></input>
 				<label htmlFor="instructions" className="recipe-edit__label">
 					Instructions
@@ -65,7 +83,7 @@ export default function RecipeEdit({ recipe }) {
 					id="instructions"
 					className="recipe-list__input"
 					value={recipe.instructions}
-					onInput={(e) => handleChange({ instructions: e.target.value })}
+					onChange={(e) => handleChange({ instructions: e.target.value })}
 				></textarea>
 			</div>
 			<br />
@@ -80,12 +98,15 @@ export default function RecipeEdit({ recipe }) {
 							key={ingredient.id}
 							ingredient={ingredient}
 							handleIngredientChange={handleIngredientChange}
+							handleIngredientDelete={handleIngredientDelete}
 						></RecipeIngredientEdit>
 					);
 				})}
 			</div>
 			<div className="recipe-edit__add-ingredient-btn-container">
-				<button className="btn add-recipe-btn">Add Ingredient</button>
+				<button className="btn add-recipe-btn" onClick={() => handleIngredientAdd()}>
+					Add Ingredient
+				</button>
 			</div>
 		</div>
 	);
